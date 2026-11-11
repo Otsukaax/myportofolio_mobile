@@ -133,14 +133,53 @@ class ItemCard extends StatelessWidget {
       child: InkWell(
         // Aksi ketika kartu ditekan oleh pengguna.
         onTap: () {
-          // Menampilkan SnackBar dengan pesan interaktif.
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text("Kamu telah menekan tombol ${item.name}!"),
-              ),
+          if (item.name == "Logout") {
+            showDialog(
+              context: context,
+              builder: (BuildContext dialogContext) {
+                return AlertDialog(
+                  title: const Text('Konfirmasi Logout'),
+                  content: const Text(
+                    'Apakah Anda yakin ingin keluar dari aplikasi?',
+                  ),
+                  actions: [
+                    // 1. Tombol Batal
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Batal'),
+                    ),
+
+                    // 2. Tombol Keluar
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            const SnackBar(
+                              content: Text("Kamu telah berhasil logout!"),
+                            ),
+                          );
+                      },
+                      child: const Text('Keluar'),
+                    ),
+                  ],
+                );
+              },
             );
+          } else {
+            // Menampilkan SnackBar dengan pesan interaktif.
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text("Kamu telah menekan tombol ${item.name}!"),
+                ),
+              );
+          }
         },
         child: Container(
           padding: const EdgeInsets.all(8),
