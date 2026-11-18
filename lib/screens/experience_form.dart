@@ -73,7 +73,7 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
                 child: TextFormField(
                   maxLines: 5,
                   decoration: InputDecoration(
-                    hintText: "Deskripsi Pengalaman",
+                    hintText: "Mengerjakan fitur X...",
                     labelText: "Deskripsi Pengalaman",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
@@ -121,8 +121,8 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: "URL Thumbnail (opsional)",
-                    labelText: "URL Thumbnail",
+                    hintText: "https://example.com/image.png",
+                    labelText: "URL Thumbnail (Opsional)",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
