@@ -1,28 +1,28 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 
-class ProjectFormPage extends StatefulWidget {
-  const ProjectFormPage({super.key});
+class ExperienceFormPage extends StatefulWidget {
+  const ExperienceFormPage({super.key});
 
   @override
-  State<ProjectFormPage> createState() => _ProjectFormPageState();
+  State<ExperienceFormPage> createState() => _ExperienceFormPageState();
 }
 
-class _ProjectFormPageState extends State<ProjectFormPage> {
+class _ExperienceFormPageState extends State<ExperienceFormPage> {
   final _formKey = GlobalKey<FormState>();
-  String _projectName = "";
+  String _title = "";
   String _description = "";
-  String _category = "Web Development"; // default
-  String _technologies = "";
-  String _projectLink = "";
+  String _category = "full-time"; // default
+  String _thumbnail = "";
 
-  final List<String> _categories = [
-    'Web Development',
-    'Mobile Development',
-    'Machine Learning',
-    'Data Science',
-    'Other',
-  ];
+  final Map<String, String> _categories = {
+    'Internship': 'Internship',
+    'research': 'Research',
+    'volunteer': 'Volunteer',
+    'part-time': 'Part-Time',
+    'full-time': 'Full-Time',
+    'freelance': 'Freelance',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Add Project Form',
+            'Add Experience Form',
           ),
         ),
         backgroundColor: Colors.indigo,
@@ -43,25 +43,25 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // === Project Name ===
+              // === Title ===
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: "Nama Proyek",
-                    labelText: "Nama Proyek",
+                    hintText: "Software Engineer Intern",
+                    labelText: "Posisi / Pekerjaan",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                   onChanged: (String? value) {
                     setState(() {
-                      _projectName = value!;
+                      _title = value!;
                     });
                   },
                   validator: (String? value) {
                     if (value == null || value.trim().isEmpty) {
-                      return "Nama proyek tidak boleh kosong!";
+                      return "Posisi / pekerjaan tidak boleh kosong!";
                     }
                     return null;
                   },
@@ -73,8 +73,8 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                 child: TextFormField(
                   maxLines: 5,
                   decoration: InputDecoration(
-                    hintText: "Deskripsi Proyek",
-                    labelText: "Deskripsi Proyek",
+                    hintText: "Deskripsi Pengalaman",
+                    labelText: "Deskripsi Pengalaman",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -86,7 +86,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                   },
                   validator: (String? value) {
                     if (value == null || value.trim().isEmpty) {
-                      return "Deskripsi proyek tidak boleh kosong!";
+                      return "Deskripsi pengalaman tidak boleh kosong!";
                     }
                     return null;
                   },
@@ -97,16 +97,16 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: DropdownButtonFormField<String>(
                   decoration: InputDecoration(
-                    labelText: "Kategori Proyek",
+                    labelText: "Kategori Experience",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                   initialValue: _category,
-                  items: _categories
-                      .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(category),
+                  items: _categories.entries
+                      .map((entry) => DropdownMenuItem(
+                            value: entry.key,
+                            child: Text(entry.value),
                           ))
                       .toList(),
                   onChanged: (String? newValue) {
@@ -116,38 +116,20 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                   },
                 ),
               ),
-              // === Technologies ===
+              // === Thumbnail URL ===
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: "Contoh: Flutter, Django, Figma",
-                    labelText: "Teknologi yang Digunakan",
+                    hintText: "URL Thumbnail (opsional)",
+                    labelText: "URL Thumbnail",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                   onChanged: (String? value) {
                     setState(() {
-                      _technologies = value!;
-                    });
-                  },
-                ),
-              ),
-              // === Project Link ===
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "URL Proyek (opsional)",
-                    labelText: "Tautan Proyek",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  onChanged: (String? value) {
-                    setState(() {
-                      _projectLink = value!;
+                      _thumbnail = value!;
                     });
                   },
                 ),
@@ -168,17 +150,19 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text('Proyek berhasil ditambahkan!'),
+                              title:
+                                  const Text('Experience berhasil ditambahkan!'),
                               content: SingleChildScrollView(
                                 child: Column(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                   children: [
-                                    Text('Nama Proyek: $_projectName'),
+                                    Text('Posisi / Pekerjaan: $_title'),
                                     Text('Deskripsi: $_description'),
-                                    Text('Kategori: $_category'),
-                                    Text('Teknologi: $_technologies'),
-                                    Text('Tautan: $_projectLink'),
+                                    Text(
+                                      'Kategori: ${_categories[_category] ?? _category}',
+                                    ),
+                                    Text('URL Thumbnail: $_thumbnail'),
                                   ],
                                 ),
                               ),
