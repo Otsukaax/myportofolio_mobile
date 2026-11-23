@@ -68,9 +68,8 @@ class _EducationFormPageState extends State<EducationFormPage> {
   Widget _buildSummaryRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6.0),
-      child: RichText(
-        text: TextSpan(
-          style: DefaultTextStyle.of(context).style,
+      child: Text.rich(
+        TextSpan(
           children: [
             TextSpan(
               text: '$label: ',
