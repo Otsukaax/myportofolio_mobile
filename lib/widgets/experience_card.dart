@@ -3,6 +3,9 @@ import 'package:myportofolio_mobile/screens/education_form.dart';
 import 'package:myportofolio_mobile/screens/experience_form.dart';
 import 'package:myportofolio_mobile/screens/experience_list_screen.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
+import 'package:myportofolio_mobile/services/auth_state.dart';
+import 'package:myportofolio_mobile/widgets/auth_guard.dart';
+import 'package:provider/provider.dart';
 
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;
@@ -17,8 +20,18 @@ class ItemCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         // Aksi ketika kartu ditekan oleh pengguna.
-        onTap: () {
+        onTap: () async {
           if (item.name == "Logout") {
+            final authState = context.read<AuthState>();
+            if (!authState.isLoggedIn) {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  const SnackBar(content: Text("Kamu belum login.")),
+                );
+              return;
+            }
+
             showDialog(
               context: context,
               builder: (BuildContext dialogContext) {
@@ -31,17 +44,18 @@ class ItemCard extends StatelessWidget {
                     // 1. Tombol Batal
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pop(dialogContext);
                       },
                       child: const Text('Batal'),
                     ),
 
                     // 2. Tombol Keluar
                     TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-
-                        ScaffoldMessenger.of(context)
+                      onPressed: () async {
+                        final messenger = ScaffoldMessenger.of(context);
+                        Navigator.pop(dialogContext);
+                        await authState.logout();
+                        messenger
                           ..hideCurrentSnackBar()
                           ..showSnackBar(
                             const SnackBar(
@@ -73,6 +87,8 @@ class ItemCard extends StatelessWidget {
                 ),
               );
             } else if (item.name == "Tambah Experience") {
+              final loggedIn = await ensureLoggedIn(context);
+              if (!context.mounted || !loggedIn) return;
               Navigator.push(
                 context,
                 MaterialPageRoute(
