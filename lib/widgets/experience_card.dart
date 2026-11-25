@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/screens/education_form.dart';
 import 'package:myportofolio_mobile/screens/experience_form.dart';
+import 'package:myportofolio_mobile/screens/experience_list_screen.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 
 class ItemCard extends StatelessWidget {
@@ -64,7 +65,14 @@ class ItemCard extends StatelessWidget {
                 ),
               );
             // Navigate ke halaman yang sesuai
-            if (item.name == "Tambah Experience") {
+            if (item.name == "Lihat Experience") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ExperienceListScreen(),
+                ),
+              );
+            } else if (item.name == "Tambah Experience") {
               Navigator.push(
                 context,
                 MaterialPageRoute(
